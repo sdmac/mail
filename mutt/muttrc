@@ -1,0 +1,182 @@
+# =========================================================================================
+# ==== General Settings ===================================================================
+# =========================================================================================
+
+set nobeep                              # no sounds
+set nomark_old                          # avoid marking unread msgs as old ones
+set move = no                           # do not ask to move read messages to mbox on exit
+set delete = yes                        # do not confirm delete
+#set quit = yes                         # do not confirm quit
+set sort = "threads"                    # sort messages as threads
+set sort_aux = "last-date-received"     # sort by descending date
+set sort_re = yes                       # thread and reply based on regex of subject
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+#set strict_threads                      # do not thread messages by subject
+set followup_to = no                    # not a standard
+set honor_followup_to = no              # ignore this hack
+set pager_index_lines = 15              # number of index lines to show
+set pager_context = 5                   # number of lines to retain when scrolling
+set pager_stop = yes                    # don't go to the next message automatically
+set markers = no                        # ignore "+" markers for wrapped lines
+set smart_wrap = yes                    # wrap at word boundary instead of screen edge
+set menu_scroll = yes                   # scroll menu instead of clear-and-display
+set menu_context = 5                    # number of lines of menu scroll context
+set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
+set editor = "vim -c XWriteMode '%s'"   # is there any other editor?
+set mail_check = 10                     # frequency in seconds
+set implicit_autoview                   # use mailcap-defined viewer for non-internal MIME attachment types
+set pipe_decode                         # strip headers and eval mimes when piping
+set thorough_search                     # strip headers and eval mimes before searching
+set net_inc = 5                         # display download progress every 5K
+set tilde                               # pad blank lines to the bottom of the screen with a tilde
+
+set imap_check_subscribed = yes         # automatically poll subscribed mailboxes for new mail
+
+set ssl_force_tls = yes                 # always use SSL when connecting to a server
+
+# display formats
+set index_format="%4C %Z %[!%b %d %Y %l:%M%P]  %-25.25F (%3E) %s"
+set status_format="-%r- %f %?n?[ New:%n ]?----%>-(%P)---"
+set status_on_top
+
+set date_format = "%d/%m/%y at %I:%M%P"
+#set alias_format = "%4n %t %-20a %r"
+#set folder_format="%t%N  %2C %-30f %8s %d "
+#set hdr_format="%4C %Z %{%b %d} %-15.15n (%4l) %s"
+#set sidebar_format=" %B %N (%S)"
+
+# headers to show
+ignore *Mail                                                       # ignore all headers
+unignore From To Cc Date Subject Organization X-Mailer User-Agent  # show only these
+hdr_order From: To: Cc: Date: Subject:                             # and in this order
+
+# composing mail
+set send_charset = "us-ascii:utf-8"
+set use_from = yes                      # generate the “From:” header field when sending messages
+set use_envelope_from = yes             # use same address for envelope as for "From:" header field
+set edit_headers = yes                  # can add cc, bcc, or change from input
+set sig_dashes                          # insert dashes before signature
+#set fast_reply                          # skip to compose when replying
+set include = yes                       # automatically quote message
+set attribution = "On %d, %n wrote:"    # preceding string of reply message
+set reply_to                            # reply to Reply to: field
+set reverse_name                        # reply as whomever it was to
+set fcc_attach                          # save attachments with the body of outgoing message
+unset mime_forward                      # forward attachments as part of body
+set forward_format = "Fwd: %s"          # format for subject when forwarding
+set forward_decode                      # decode when forwarding
+set forward_quote                       # include message in forwards
+
+# aliases
+set alias_file = ~/.mutt/aliases
+set sort_alias = alias
+set reverse_alias = yes
+source $alias_file
+
+
+# =========================================================================================
+# === Mime ================================================================================
+# =========================================================================================
+
+# Tell mutt which MIME types to auto-view
+auto_view application/zip
+auto_view application/x-gzip
+auto_view application/x-gunzip
+auto_view application/octet-stream
+auto_view application/x-zip-compressed
+auto_view application/x-tar-gz
+auto_view application/msword
+auto_view application/x-perl
+auto_view application/x-sh
+auto_view application/x-tcl
+auto_view application/RTF
+auto_view text/html
+auto_view text/x-vcard
+auto_view image/tiff
+
+# prefer plaintext to html, html to word, etc.
+alternative_order text/enriched text/plain text text/html application/vnd.msword application/msword
+
+
+# =========================================================================================
+# === Mapping =============================================================================
+# =========================================================================================
+
+bind index gg           first-entry
+bind index G            last-entry
+bind index K            previous-thread
+bind index J            next-thread
+bind index,pager r      group-reply
+bind index,pager \#     noop
+bind index i            noop
+
+bind pager k            previous-line
+bind pager j            next-line
+bind pager i            exit
+bind pager /            search
+bind pager <up>         previous-line
+bind pager <down>       next-line
+bind pager gg           top
+bind pager G            bottom
+bind pager K            previous-undeleted
+bind pager J            next-undeleted
+#bind pager n            next-undeleted
+#bind pager p            previous-undeleted
+
+bind editor \t          complete-query
+#bind editor             complete
+
+
+# =========================================================================================
+# === Macros ==============================================================================
+# =========================================================================================
+
+macro index B "<limit>~b " "search message bodies"
+macro index I "<change-folder>!<enter>" "go to Inbox"
+
+macro index 1 '<sync-mailbox><enter-command>source ~/.mutt/acct1<enter><change-folder>!<enter>'
+macro index 2 '<sync-mailbox><enter-command>source ~/.mutt/acct2<enter><change-folder>!<enter>'
+#macro index c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+#macro pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+
+# b toggles sidebar visibility
+macro index b '<enter-command>toggle sidebar_visible<enter><refresh>'
+macro pager b '<enter-command>toggle sidebar_visible<enter><redraw-screen>'
+
+
+# =========================================================================================
+# === Sidebar =============================================================================
+# =========================================================================================
+
+set sidebar_width=36
+set sidebar_visible=no
+set sidebar_delim=' |'
+set sidebar_sort=no
+
+set sidebar_folderindent=yes
+set sidebar_indentstr='  '
+set sidebar_shortpath=yes
+
+# color of folders with new mail
+color sidebar_new brightmagenta default
+
+# ctrl-n, ctrl-p to select next, prev folder
+# ctrl-o to open selected folder
+bind index \CP sidebar-prev
+bind index \CN sidebar-next
+bind index \CO sidebar-open
+bind pager \CP sidebar-prev
+bind pager \CN sidebar-next
+bind pager \CO sidebar-open
+
+# just for documentation purposes
+#sidebar-scroll-up
+#sidebar-scroll-down
+
+
+
+# theme!
+source ~/.mutt/theme
+
+# default account
+source "~/.mutt/acct1"
