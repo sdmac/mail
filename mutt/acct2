@@ -1,0 +1,20 @@
+set mbox_type=Maildir
+set mask="!^\\.[^.]"
+
+set folder="/home/john/Maildir/gmail"
+
+mailboxes ! + `\\
+
+for file in ~/Maildir/gmail/.*; do \\
+
+  box=$(basename "$file"); \\
+
+  if [ ! "$box" = '.' -a ! "$box" = '..' -a ! "$box" = '.customflags' \\
+
+      -a ! "$box" = '.subscriptions' ]; then \\
+
+    echo -n "\"+$box\" "; \\
+
+  fi; \\
+
+done`

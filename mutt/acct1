@@ -1,0 +1,16 @@
+set mbox_type=Maildir
+set mask="!^\\.[^.]"
+
+set from="John Smith <john@example.org>"        # default from address
+set realname="John Smith"                       # “real” name used when sending messages
+
+set imap_user=john@example.org                  # IMAP server user name
+
+set spoolfile=imaps://example.org/INBOX         # startup mailbox location
+set folder=imaps://example.org/                 # default location for mailboxes
+
+set record="=Sent"                              # outgoing message storage location
+set postponed="=Drafts"                         # postponed (draft) message store location
+
+# specifies folders which can receive mail and which will be checked for new messages periodically
+mailboxes =INBOX =Sent =Drafts =Junk =Trash
